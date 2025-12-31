@@ -61,7 +61,7 @@ const changeInfoDateTime = () => {
     date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
   }`;
 
-  let today = `${date.getDay()}.${date.getMonth() + 1}.${date.getFullYear()}.`;
+  let today = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`;
   info.children[0].innerHTML = time;
   info.children[1].innerHTML = today;
 };
