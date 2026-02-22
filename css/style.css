@@ -16,6 +16,16 @@ body {
   place-items: center;
 }
 
+.select-box {
+  position: absolute;
+  display: none;
+  width: 200px;
+  height: 200px;
+  background-color: #fcffff;
+  border-radius: 3px;
+  border: dashed 5px;
+}
+
 .file {
   display: flex;
   flex-direction: column;
@@ -104,6 +114,9 @@ body {
 
 footer {
   width: 100%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   display: flex;
   justify-content: space-between;
   align-items: center;

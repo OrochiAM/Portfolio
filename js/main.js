@@ -34,6 +34,37 @@ x.addEventListener('click', () => {
   windowPane.classList.add('gone');
 });
 
+// Select Box
+
+const selectBox = document.querySelector('.select-box');
+
+let isMouseDown = false;
+
+let mouseDownX = 0;
+let mouseDownY = 0;
+
+document.addEventListener('mousedown', (e) => {
+  isMouseDown = true;
+  mouseDownX = e.clientX;
+  mouseDownY = e.clientY;
+});
+
+document.addEventListener('mouseup', (e) => {
+  isMouseDown = false;
+  selectBox.style.display = 'none';
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (isMouseDown) {
+    selectBox.style.display = 'flex';
+    console.log(e.clientX);
+    selectBox.style.width = `${Math.abs(mouseDownX - e.clientX)}px`;
+    selectBox.style.height = `${Math.abs(mouseDownY - e.clientY)}px`;
+    selectBox.style.left = `${Math.abs(mouseDownX - (mouseDownX - e.clientX))}px`;
+    selectBox.style.top = `${Math.abs(mouseDownY - (mouseDownY - e.clientY))}px`;
+    console.log(mouseDownX - e.clientX);
+  }
+});
 /* TASKBAR */
 
 // Start dugme
