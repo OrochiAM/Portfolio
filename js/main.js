@@ -55,13 +55,26 @@ document.addEventListener('mouseup', (e) => {
 });
 
 document.addEventListener('mousemove', (e) => {
+  let x = e.clientX;
+  let y = e.clientY;
+
+  if (x < mouseDownX) {
+    selectBox.style.left = `${Math.abs(mouseDownX - (mouseDownX - x))}px`;
+  } else {
+    selectBox.style.left = `${mouseDownX}px`;
+  }
+
+  if (y < mouseDownY) {
+    selectBox.style.top = `${Math.abs(mouseDownY - (mouseDownY - y))}px`;
+  } else {
+    selectBox.style.top = `${mouseDownY}px`;
+  }
+
   if (isMouseDown) {
     selectBox.style.display = 'flex';
-    console.log(e.clientX);
-    selectBox.style.width = `${Math.abs(mouseDownX - e.clientX)}px`;
-    selectBox.style.height = `${Math.abs(mouseDownY - e.clientY)}px`;
-    selectBox.style.left = `${Math.abs(mouseDownX - (mouseDownX - e.clientX))}px`;
-    selectBox.style.top = `${Math.abs(mouseDownY - (mouseDownY - e.clientY))}px`;
+    console.log(x);
+    selectBox.style.width = `${Math.abs(mouseDownX - x)}px`;
+    selectBox.style.height = `${Math.abs(mouseDownY - y)}px`;
     console.log(mouseDownX - e.clientX);
   }
 });
