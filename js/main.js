@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 /* FILES */
 const file = document.querySelector('.file');
-const x = document.querySelector('.btn-close');
+const closeButton = document.querySelector('.btn-close');
 const windowPane = document.querySelector('.window');
 const fileName = file.children[1].children[0];
 let fileNameText = fileName.innerHTML;
@@ -30,7 +30,7 @@ file.addEventListener('focusout', () => {
 });
 
 // Closing
-x.addEventListener('click', () => {
+closeButton.addEventListener('click', () => {
   windowPane.classList.add('gone');
 });
 
@@ -54,10 +54,9 @@ document.addEventListener('mouseup', (e) => {
   selectBox.style.display = 'none';
 });
 
-document.addEventListener('mousemove', (e) => {
-  let x = e.clientX;
-  let y = e.clientY;
+let x, y;
 
+const handleSelectBoxPosition = () => {
   if (x < mouseDownX) {
     selectBox.style.left = `${Math.abs(mouseDownX - (mouseDownX - x))}px`;
   } else {
@@ -72,11 +71,16 @@ document.addEventListener('mousemove', (e) => {
 
   if (isMouseDown) {
     selectBox.style.display = 'flex';
-    console.log(x);
     selectBox.style.width = `${Math.abs(mouseDownX - x)}px`;
     selectBox.style.height = `${Math.abs(mouseDownY - y)}px`;
-    console.log(mouseDownX - e.clientX);
   }
+};
+
+document.addEventListener('mousemove', (e) => {
+  x = e.clientX;
+  y = e.clientY;
+
+  handleSelectBoxPosition();
 });
 /* TASKBAR */
 
