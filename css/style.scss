@@ -21,9 +21,11 @@ body {
   display: none;
   width: 200px;
   height: 200px;
-  background-color: #fcffff;
-  border-radius: 3px;
-  border: dashed 5px;
+  background-color: #faffff;
+  border: solid 15px transparent;
+  border-image: url('../images/border.png') 30 round;
+  border-image-slice: 33;
+  border-image-outset: 2px;
 }
 
 .file {
@@ -35,7 +37,6 @@ body {
   padding: 2em;
   transition-property: background-color;
   transition-duration: 0.4s;
-  border-radius: 10px;
   border: solid 15px transparent;
   transform: scale(0.7);
   position: absolute;
@@ -62,22 +63,26 @@ body {
   border-width: 15px;
   border-style: solid;
   border-image: url('../images/border.png') 30 round;
+  border-image-slice: 25;
+  border-image-outset: 2px;
 }
 
 .file:focus {
   cursor: pointer;
   background-color: #daf1f5;
-  border-width: 15px;
-  border-style: solid;
   border-image: url('../images/border.png') 30 round;
+  border-image-slice: 25;
+  border-image-outset: 2px;
   outline: none;
 }
 
 .window {
   height: 300px;
-  width: 300px;
+  width: 400px;
   border: solid 15px;
   border-image: url('../images/border2.png') 40 round;
+  border-image-slice: 35;
+  border-image-outset: 2px;
   padding: 5px;
   background-color: #fff9e8;
   border-radius: 20px;
@@ -146,7 +151,7 @@ footer {
         background-color: var(--gray);
         border: solid 15px;
         border-image: url('../images/border2.png') 40 round;
-
+        border-image-outset: 1px;
         svg {
           width: 40px;
         }
