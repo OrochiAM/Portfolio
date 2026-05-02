@@ -34,22 +34,24 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 340px;
+  width: 250px;
   padding: 2em;
   transition-property: background-color;
   transition-duration: 0.4s;
   border: solid 15px transparent;
   transform: scale(0.7);
   position: absolute;
+  top: 0;
+  left: 0;
 }
 .file .image {
-  width: 176px;
-  height: 184px;
+  width: 117.3333333333px;
+  height: 122.6666666667px;
   background-image: url("../images/file.png");
-  background-size: contain;
+  background-size: cover;
 }
 .file .name {
-  font-size: 25px;
+  font-size: 24px;
   width: 100%;
   text-align: center;
   margin-top: 15px;
@@ -111,14 +113,17 @@ body {
 .window .body {
   width: 100%;
   padding: 15px 5px 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .window .body iframe {
-  border: solid 3px;
+  border: solid 4px;
   -o-border-image: url("../images/border2.png") 40 round;
      border-image: url("../images/border2.png") 40 round;
   background-color: #000;
   border-image-slice: 10;
-  border-image-outset: 2.5px;
+  border-image-outset: 2px 2px 1px 1px;
 }
 
 .gone {
