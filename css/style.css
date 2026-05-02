@@ -78,9 +78,7 @@ body {
 }
 
 .window {
-  height: 300px;
-  width: 400px;
-  border: solid 15px;
+  border: solid 14px;
   -o-border-image: url("../images/border2.png") 40 round;
      border-image: url("../images/border2.png") 40 round;
   border-image-slice: 35;
@@ -110,8 +108,17 @@ body {
   width: 35px;
   cursor: pointer;
 }
-.window .body .text {
-  padding: 10px 0;
+.window .body {
+  width: 100%;
+  padding: 15px 5px 0 5px;
+}
+.window .body iframe {
+  border: solid 3px;
+  -o-border-image: url("../images/border2.png") 40 round;
+     border-image: url("../images/border2.png") 40 round;
+  background-color: #000;
+  border-image-slice: 10;
+  border-image-outset: 2.5px;
 }
 
 .gone {
