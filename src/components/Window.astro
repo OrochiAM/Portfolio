@@ -1,0 +1,43 @@
+---
+import closeIcon from '../assets/images/x.png';
+import File from './File.astro';
+import Folder from './Folder.astro';
+import type { Item } from '../data/items';
+
+interface Props {
+  item: Item;
+}
+const { item } = Astro.props;
+---
+
+<div class="window gone" data-window={item.id}>
+  <div class="header" title={item.name}>
+    <div class="text">
+      <p>{item.title}</p>
+    </div>
+    <div class="close btn-close">
+      <img src={closeIcon.src} alt="Close" />
+    </div>
+  </div>
+  <div class="body">
+    {
+      item.kind === 'folder' ? (
+        <div class="folder-grid">
+          {item.children.map((child) =>
+            child.kind === 'folder' ? (
+              <Folder item={child} nested />
+            ) : (
+              <File item={child} nested />
+            ),
+          )}
+        </div>
+      ) : item.content.type === 'iframe' ? (
+        <iframe src={item.content.src} title={item.title} />
+      ) : (
+        <div class="text">
+          <p>{item.content.text}</p>
+        </div>
+      )
+    }
+  </div>
+</div>

@@ -1,0 +1,36 @@
+---
+import startMeh from '../assets/images/start-meh.png';
+import start from '../assets/images/start.png';
+import { items, flatten } from '../data/items';
+---
+
+<footer>
+  <div class="left">
+    <div class="start">
+      <img
+        src={startMeh.src}
+        class="btn-start"
+        data-closed={startMeh.src}
+        data-open={start.src}
+        alt="Start"
+      />
+    </div>
+    <div class="file-tray">
+      {
+        flatten(items).map((item) => (
+          <div class="file-tray-item gone" data-tray={item.id} title={item.name}>
+            <!-- paste your original <svg>…</svg> here, unchanged -->
+            <p>{item.title}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="info">
+      <p class="time">20:25</p>
+      <p class="date">5.9.2069</p>
+    </div>
+  </div>
+</footer>

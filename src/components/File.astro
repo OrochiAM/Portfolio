@@ -1,0 +1,27 @@
+---
+import fileIcon from '../assets/images/file.png';
+import type { FileItem } from '../data/items';
+import { getIcon } from '../data/icons';
+
+interface Props {
+  item: FileItem;
+  nested?: boolean;
+}
+const { item, nested = false } = Astro.props;
+---
+
+<div
+  class:list={['file', { 'in-window': nested }]}
+  role="button"
+  tabindex="0"
+  data-open={item.id}
+  data-x={item.x}
+  data-y={item.y}
+  data-name={item.name}
+  title={item.name}
+>
+  <img src={getIcon(item.icon, fileIcon).src} alt="" />
+  <div class="name">
+    <p>{item.name}</p>
+  </div>
+</div>
