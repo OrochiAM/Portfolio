@@ -168,3 +168,50 @@ document.querySelectorAll<HTMLInputElement>('.search').forEach((input) => {
     });
   });
 });
+
+/* BROWSER (carousel of pages) */
+document.querySelectorAll<HTMLElement>('.browser').forEach((browser) => {
+  const pages = [...browser.querySelectorAll<HTMLElement>('.page')];
+  const input = browser.querySelector<HTMLInputElement>('.url-input')!;
+  const list = browser.querySelector<HTMLElement>('.address-list')!;
+  const view = browser.querySelector<HTMLElement>('.browser-view')!;
+  let index = 0;
+
+  const show = (i: number) => {
+    index = (i + pages.length) % pages.length; // wraps around: carousel
+    pages.forEach((page, n) => page.classList.toggle('gone', n !== index));
+    input.value = pages[index].dataset.url!;
+    view.scrollTop = 0;
+    list.classList.add('gone');
+  };
+
+  browser
+    .querySelector('.prev')!
+    .addEventListener('click', () => show(index - 1));
+  browser
+    .querySelector('.next')!
+    .addEventListener('click', () => show(index + 1));
+  browser.querySelector('.home')!.addEventListener('click', () => show(0));
+
+  // typing an address + Enter jumps to that page, unknown addresses snap back
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const typed = input.value.trim().toLowerCase();
+    const match = pages.findIndex(
+      (p) => p.dataset.url!.toLowerCase() === typed,
+    );
+    show(match === -1 ? index : match);
+  });
+
+  browser
+    .querySelector('.dropdown')!
+    .addEventListener('click', () => list.classList.toggle('gone'));
+  list
+    .querySelectorAll<HTMLElement>('li')
+    .forEach((li, n) => li.addEventListener('click', () => show(n)));
+
+  document.addEventListener('click', (e) => {
+    if (!(e.target as HTMLElement).closest('.address-field'))
+      list.classList.add('gone');
+  });
+});

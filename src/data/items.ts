@@ -1,6 +1,7 @@
 export type Content =
   | { type: 'iframe'; src: string }
-  | { type: 'text'; text: string };
+  | { type: 'text'; text: string }
+  | { type: 'browser'; pages: BrowserPage[] };
 
 interface Base {
   id: string;
@@ -19,6 +20,11 @@ export interface FileItem extends Base {
 export interface FolderItem extends Base {
   kind: 'folder';
   children: Item[];
+}
+
+export interface BrowserPage {
+  url: string;
+  html: string;
 }
 
 export type Item = FileItem | FolderItem;
@@ -106,5 +112,29 @@ export const items: Item[] = [
     x: 210,
     y: 10,
     content: { type: 'text', text: 'Hi :3' },
+  },
+  {
+    kind: 'file',
+    id: 'about-me',
+    name: 'About Me.html',
+    title: 'ABOUT ME',
+    x: 420,
+    y: 10,
+    icon: 'browser',
+    content: {
+      type: 'browser',
+      pages: [
+        {
+          url: 'http://me.web/index.html',
+          html: '<h1>Aleksa Milic</h1><p>Frontend Developer.</p>',
+        },
+        { url: 'http://me.web/skills.html', html: '<h1>Skills</h1><p>…</p>' },
+        {
+          url: 'http://me.web/projects.html',
+          html: '<h1>Projects</h1><p>…</p>',
+        },
+        { url: 'http://me.web/contact.html', html: '<h1>Contact</h1><p>…</p>' },
+      ],
+    },
   },
 ];

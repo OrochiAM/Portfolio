@@ -3,11 +3,8 @@ import closeIcon from '../assets/images/x.png';
 import minimizeIcon from '../assets/images/minimize.png';
 import File from './File.astro';
 import Folder from './Folder.astro';
-import type { Item } from '../data/items';
-import folderIcon from '../assets/images/folder.png';
-import { getIcon } from '../data/icons';
 import { pathOf } from '../data/items';
-
+import type { Item } from '../data/items';
 
 interface Props {
   item: Item;
@@ -22,7 +19,7 @@ const path = item.kind === 'folder' ? pathOf(item) : undefined;
     <div class="text">
       <p>{item.title}</p>
     </div>
-      <div class="buttons">
+    <div class="buttons">
       <div class="minimize btn-minimize" title="Minimize">
         <img src={minimizeIcon.src} alt="Minimize" />
       </div>
@@ -35,21 +32,56 @@ const path = item.kind === 'folder' ? pathOf(item) : undefined;
     {
       item.kind === 'folder' ? (
         <div class="folder-view">
-  <div class="toolbar">
-    <div class="address">
-      <img src={getIcon(item.icon, folderIcon).src} alt="" />
-      <span>{path}</span>
-    </div>
-    <input class="search" type="text" placeholder="Search" />
-  </div>
-  <div class="folder-grid">
-    {item.children.map((child) =>
-      child.kind === 'folder' ? <Folder item={child} nested /> : <File item={child} nested />,
-    )}
-  </div>
-</div>
+          <div class="toolbar">
+            <div class="address">
+              <span>{path}</span>
+            </div>
+            <input class="search" type="text" placeholder="Search" />
+          </div>
+          <div class="folder-grid">
+            {item.children.map((child) =>
+              child.kind === 'folder' ? (
+                <Folder item={child} nested />
+              ) : (
+                <File item={child} nested />
+              ),
+            )}
+          </div>
+        </div>
       ) : item.content.type === 'iframe' ? (
         <iframe src={item.content.src} title={item.title} />
+      ) : item.content.type === 'browser' ? (
+        <div class="browser">
+          <div class="browser-bar">
+            <button class="nav prev" type="button" title="Back" />
+            <button class="nav next" type="button" title="Forward" />
+            <button class="nav home" type="button" title="First page" />
+            <label>Address:</label>
+            <div class="address-field">
+              <input
+                class="url-input"
+                type="text"
+                value={item.content.pages[0].url}
+                spellcheck="false"
+              />
+              <button class="dropdown" type="button" title="Pages" />
+              <ul class="address-list gone">
+                {item.content.pages.map((p) => (
+                  <li>{p.url}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div class="browser-view">
+            {item.content.pages.map((p, i) => (
+              <article
+                class:list={['page', { gone: i > 0 }]}
+                data-url={p.url}
+                set:html={p.html}
+              />
+            ))}
+          </div>
+        </div>
       ) : (
         <div class="text">
           <p>{item.content.text}</p>
