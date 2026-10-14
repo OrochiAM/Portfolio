@@ -9,7 +9,7 @@
 :root {
   --gray: #dbe2e6;
   --dark-gray: #cbd3d8;
-  --border-size: 8px;
+  --border-size: 7px;
 }
 
 body {
@@ -120,7 +120,8 @@ iframe {
   .header {
     color: #fff;
     width: 100%;
-    padding: 2px 10px 10px 10px;
+    padding: var(--border-size);
+    padding-bottom: calc(var(--border-size) * 2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -132,12 +133,14 @@ iframe {
     }
 
     .close {
-      padding: 5px;
+      padding: 0.5em;
+
       display: flex;
     }
 
     .close:hover {
-      outline: solid 5px #fff;
+      background-color: red;
+      outline: solid var(--border-size) #fff;
     }
 
     img {

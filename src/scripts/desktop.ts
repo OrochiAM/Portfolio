@@ -4,9 +4,32 @@ import { Draggable } from 'gsap/Draggable';
 gsap.registerPlugin(Draggable);
 
 /* FILES, FOLDERS & WINDOWS */
-const truncate = (text: string) => text.slice(0, 20) + '...';
+const MAX_LINES = 2;
 
-// Desktop icons and windows are draggable; icons inside a folder window are not
+const fitName = (file: HTMLElement) => {
+  const el = file.querySelector<HTMLElement>('.name p')!;
+  const full = file.dataset.name!;
+
+  el.textContent = 'A';
+  const maxHeight = el.offsetHeight * MAX_LINES; // height of 2 lines
+  el.textContent = full;
+  if (el.offsetHeight <= maxHeight) return;
+
+  let lo = 0;
+  let hi = full.length;
+  while (lo < hi) {
+    const mid = Math.ceil((lo + hi) / 2);
+    el.textContent = full.slice(0, mid).trimEnd() + '...';
+    if (el.offsetHeight <= maxHeight) lo = mid;
+    else hi = mid - 1;
+  }
+  el.textContent = full.slice(0, lo).trimEnd() + '...';
+};
+
+document.fonts.ready.then(() => {
+  document.querySelectorAll<HTMLElement>('.file').forEach(fitName);
+});
+
 document
   .querySelectorAll<HTMLElement>('.file:not(.in-window), .window')
   .forEach((el, i) => {
@@ -28,18 +51,21 @@ document.querySelectorAll<HTMLElement>('.file').forEach((file) => {
   const trayItem = document.querySelector<HTMLElement>(`[data-tray="${id}"]`)!;
   const closeButton = windowPane.querySelector<HTMLElement>('.btn-close')!;
 
-  nameEl.textContent = truncate(fullName);
+  file.addEventListener('focusout', () => {
+    fitName(file);
+    file.blur();
+  });
 
   // Opening and file name extension
   file.addEventListener('dblclick', () => {
     nameEl.textContent = fullName;
     windowPane.classList.remove('gone');
     trayItem.classList.remove('gone');
+    windowPane.querySelectorAll<HTMLElement>('.file').forEach(fitName);
     file.focus();
   });
 
   file.addEventListener('focusout', () => {
-    nameEl.textContent = truncate(fullName);
     file.blur();
   });
 
@@ -47,6 +73,14 @@ document.querySelectorAll<HTMLElement>('.file').forEach((file) => {
   closeButton.addEventListener('click', () => {
     windowPane.classList.add('gone');
     trayItem.classList.add('gone');
+  });
+
+  file.addEventListener('dblclick', () => {
+    nameEl.textContent = fullName;
+    windowPane.classList.remove('gone');
+    windowPane.style.zIndex = String(++Draggable.zIndex);
+    trayItem.classList.remove('gone');
+    file.focus();
   });
 });
 
