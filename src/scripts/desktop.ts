@@ -41,64 +41,59 @@ document
     Draggable.create(el, { zIndexBoost: isWindow, dragClickables: false });
   });
 
+const parts = (id: string) => ({
+  win: document.querySelector<HTMLElement>(`[data-window="${id}"]`)!,
+  tray: document.querySelector<HTMLElement>(`[data-tray="${id}"]`)!,
+});
+
+const openItem = (id: string) => {
+  const { win, tray } = parts(id);
+  win.classList.remove('gone');
+  win.style.zIndex = String(++Draggable.zIndex); // always on top
+  win.querySelectorAll<HTMLElement>('.file').forEach(fitName);
+  tray.classList.remove('gone');
+  tray.classList.add('active');
+};
+
+const minimizeItem = (id: string) => {
+  const { win, tray } = parts(id);
+  win.classList.add('gone');
+  tray.classList.remove('active');
+};
+
+const closeItem = (id: string) => {
+  minimizeItem(id);
+  parts(id).tray.classList.add('gone');
+};
+
 document.querySelectorAll<HTMLElement>('.file').forEach((file) => {
   const id = file.dataset.open!;
   const fullName = file.dataset.name!;
   const nameEl = file.querySelector<HTMLElement>('.name p')!;
-  const windowPane = document.querySelector<HTMLElement>(
-    `[data-window="${id}"]`,
-  )!;
-  const trayItem = document.querySelector<HTMLElement>(`[data-tray="${id}"]`)!;
-  const closeButton = windowPane.querySelector<HTMLElement>('.btn-close')!;
+  const { win, tray } = parts(id);
+
+  file.addEventListener('dblclick', () => {
+    nameEl.textContent = fullName;
+    openItem(id);
+    file.focus();
+  });
 
   file.addEventListener('focusout', () => {
     fitName(file);
     file.blur();
   });
 
-  // Opening and file name extension
-  file.addEventListener('dblclick', () => {
-    nameEl.textContent = fullName;
-    windowPane.classList.remove('gone');
-    trayItem.classList.remove('gone');
-    windowPane.querySelectorAll<HTMLElement>('.file').forEach(fitName);
-    file.focus();
-  });
+  win
+    .querySelector('.btn-minimize')!
+    .addEventListener('click', () => minimizeItem(id));
+  win
+    .querySelector('.btn-close')!
+    .addEventListener('click', () => closeItem(id));
 
-  file.addEventListener('focusout', () => {
-    file.blur();
-  });
-
-  // Closing
-  closeButton.addEventListener('click', () => {
-    windowPane.classList.add('gone');
-    trayItem.classList.add('gone');
-  });
-
-  const minimizeButton =
-    windowPane.querySelector<HTMLElement>('.btn-minimize')!;
-
-  minimizeButton.addEventListener('click', () => {
-    windowPane.classList.add('gone'); // tray item stays
-  });
-
-  // Tray item: restore if minimized, minimize if visible
-  trayItem.addEventListener('click', () => {
-    if (windowPane.classList.contains('gone')) {
-      windowPane.classList.remove('gone');
-      windowPane.style.zIndex = String(++Draggable.zIndex);
-    } else {
-      windowPane.classList.add('gone');
-    }
-  });
-
-  file.addEventListener('dblclick', () => {
-    nameEl.textContent = fullName;
-    windowPane.classList.remove('gone');
-    windowPane.style.zIndex = String(++Draggable.zIndex);
-    trayItem.classList.remove('gone');
-    file.focus();
-  });
+  // tray button: restore if minimized, minimize if open
+  tray.addEventListener('click', () =>
+    win.classList.contains('gone') ? openItem(id) : minimizeItem(id),
+  );
 });
 
 /* SELECT BOX */
@@ -131,42 +126,29 @@ document.addEventListener('mousemove', (e) => {
 
 /* TASKBAR */
 
-// Start button
+// Start button and menu
 const startBtn = document.querySelector<HTMLImageElement>('.btn-start')!;
-let closed = true;
+const startMenu = document.querySelector<HTMLElement>('.start-menu')!;
 
-startBtn.addEventListener('click', () => {
-  startBtn.src = closed ? startBtn.dataset.open! : startBtn.dataset.closed!;
-  closed = !closed;
-});
-
-// Time and date
-const timeEl = document.querySelector<HTMLElement>('.info .time')!;
-const dateEl = document.querySelector<HTMLElement>('.info .date')!;
-
-const updateDateTime = () => {
-  const date = new Date();
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  timeEl.textContent = `${date.getHours()}:${minutes}`;
-  dateEl.textContent = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`;
+const toggleStart = (open: boolean) => {
+  startMenu.classList.toggle('gone', !open);
+  startBtn.src = open ? startBtn.dataset.open! : startBtn.dataset.closed!;
 };
 
-updateDateTime();
-setInterval(updateDateTime, 1000);
+startBtn.addEventListener('click', () =>
+  toggleStart(startMenu.classList.contains('gone')),
+);
 
-document.querySelectorAll<HTMLInputElement>('.search').forEach((input) => {
-  const grid = input.closest('.folder-view')!.querySelector('.folder-grid')!;
-
-  input.addEventListener('input', () => {
-    const query = input.value.trim().toLowerCase();
-    grid.querySelectorAll<HTMLElement>('.file').forEach((f) => {
-      f.classList.toggle(
-        'gone',
-        !f.dataset.name!.toLowerCase().includes(query),
-      );
-    });
+startMenu.querySelectorAll<HTMLElement>('[data-start]').forEach((li) => {
+  li.addEventListener('click', () => {
+    openItem(li.dataset.start!);
+    toggleStart(false);
   });
+});
+
+// clicking anywhere outside the Start area closes the menu
+document.addEventListener('mousedown', (e) => {
+  if (!(e.target as HTMLElement).closest('.start')) toggleStart(false);
 });
 
 /* BROWSER (carousel of pages) */
@@ -178,7 +160,7 @@ document.querySelectorAll<HTMLElement>('.browser').forEach((browser) => {
   let index = 0;
 
   const show = (i: number) => {
-    index = (i + pages.length) % pages.length; // wraps around: carousel
+    index = (i + pages.length) % pages.length;
     pages.forEach((page, n) => page.classList.toggle('gone', n !== index));
     input.value = pages[index].dataset.url!;
     view.scrollTop = 0;
@@ -193,7 +175,6 @@ document.querySelectorAll<HTMLElement>('.browser').forEach((browser) => {
     .addEventListener('click', () => show(index + 1));
   browser.querySelector('.home')!.addEventListener('click', () => show(0));
 
-  // typing an address + Enter jumps to that page, unknown addresses snap back
   input.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
     const typed = input.value.trim().toLowerCase();

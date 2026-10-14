@@ -55,7 +55,7 @@ export const items: Item[] = [
     id: 'games',
     name: 'Games',
     title: 'GAMES',
-    x: 10,
+    x: 210,
     y: 10,
     children: [
       {
@@ -109,7 +109,7 @@ export const items: Item[] = [
     id: 'readme',
     name: 'Dugacki naziv velikoga tekstualnog fajla.txt',
     title: 'Dugacki naziv...',
-    x: 210,
+    x: 410,
     y: 10,
     content: { type: 'text', text: 'Hi :3' },
   },
@@ -118,7 +118,7 @@ export const items: Item[] = [
     id: 'about-me',
     name: 'About Me.html',
     title: 'ABOUT ME',
-    x: 420,
+    x: 10,
     y: 10,
     icon: 'browser',
     content: {

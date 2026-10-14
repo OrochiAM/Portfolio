@@ -1,15 +1,33 @@
 ---
 import startMeh from '../assets/images/start-meh.png';
 import start from '../assets/images/start.png';
-import { items, flatten } from '../data/items';
 import fileIcon from '../assets/images/file.png';
 import folderIcon from '../assets/images/folder.png';
 import { getIcon } from '../data/icons';
+import { items, flatten, pathOf } from '../data/items';
+import type { Item } from '../data/items';
+
+const all = flatten(items);
+const iconOf = (item: Item) =>
+  getIcon(item.icon, item.kind === 'folder' ? folderIcon : fileIcon).src;
 ---
 
 <footer>
   <div class="left">
     <div class="start">
+      <div class="start-menu gone">
+        <div class="start-banner"><span>PORTFOLIO</span></div>
+        <ul class="start-list">
+          {
+            all.map((item) => (
+              <li class="start-item" data-start={item.id} title={pathOf(item)}>
+                <img src={iconOf(item)} alt="" />
+                <span>{item.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
       <img
         src={startMeh.src}
         class="btn-start"
@@ -18,11 +36,16 @@ import { getIcon } from '../data/icons';
         alt="Start"
       />
     </div>
+
     <div class="file-tray">
       {
-        flatten(items).map((item) => (
-          <div class="file-tray-item gone" data-tray={item.id} title={item.name}>
-            <img src={getIcon(item.icon, item.kind === 'folder' ? folderIcon : fileIcon).src} alt="" />
+        all.map((item) => (
+          <div
+            class="file-tray-item gone"
+            data-tray={item.id}
+            title={item.name}
+          >
+            <img src={iconOf(item)} alt="" />
             <p>{item.title}</p>
           </div>
         ))
