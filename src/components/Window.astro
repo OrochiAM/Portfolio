@@ -4,11 +4,17 @@ import minimizeIcon from '../assets/images/minimize.png';
 import File from './File.astro';
 import Folder from './Folder.astro';
 import type { Item } from '../data/items';
+import folderIcon from '../assets/images/folder.png';
+import { getIcon } from '../data/icons';
+import { pathOf } from '../data/items';
+
 
 interface Props {
   item: Item;
 }
 const { item } = Astro.props;
+
+const path = item.kind === 'folder' ? pathOf(item) : undefined;
 ---
 
 <div class="window gone" data-window={item.id}>
@@ -28,15 +34,20 @@ const { item } = Astro.props;
   <div class="body">
     {
       item.kind === 'folder' ? (
-        <div class="folder-grid">
-          {item.children.map((child) =>
-            child.kind === 'folder' ? (
-              <Folder item={child} nested />
-            ) : (
-              <File item={child} nested />
-            ),
-          )}
-        </div>
+        <div class="folder-view">
+  <div class="toolbar">
+    <div class="address">
+      <img src={getIcon(item.icon, folderIcon).src} alt="" />
+      <span>{path}</span>
+    </div>
+    <input class="search" type="text" placeholder="Search" />
+  </div>
+  <div class="folder-grid">
+    {item.children.map((child) =>
+      child.kind === 'folder' ? <Folder item={child} nested /> : <File item={child} nested />,
+    )}
+  </div>
+</div>
       ) : item.content.type === 'iframe' ? (
         <iframe src={item.content.src} title={item.title} />
       ) : (

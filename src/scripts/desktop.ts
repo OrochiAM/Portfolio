@@ -11,7 +11,7 @@ const fitName = (file: HTMLElement) => {
   const full = file.dataset.name!;
 
   el.textContent = 'A';
-  const maxHeight = el.offsetHeight * MAX_LINES; // height of 2 lines
+  const maxHeight = el.offsetHeight * MAX_LINES;
   el.textContent = full;
   if (el.offsetHeight <= maxHeight) return;
 
@@ -38,7 +38,7 @@ document
       x: Number(el.dataset.x ?? (isWindow ? 150 + i * 20 : 0)),
       y: Number(el.dataset.y ?? (isWindow ? 60 + i * 20 : 0)),
     });
-    Draggable.create(el, { zIndexBoost: isWindow });
+    Draggable.create(el, { zIndexBoost: isWindow, dragClickables: false });
   });
 
 document.querySelectorAll<HTMLElement>('.file').forEach((file) => {
@@ -154,3 +154,17 @@ const updateDateTime = () => {
 
 updateDateTime();
 setInterval(updateDateTime, 1000);
+
+document.querySelectorAll<HTMLInputElement>('.search').forEach((input) => {
+  const grid = input.closest('.folder-view')!.querySelector('.folder-grid')!;
+
+  input.addEventListener('input', () => {
+    const query = input.value.trim().toLowerCase();
+    grid.querySelectorAll<HTMLElement>('.file').forEach((f) => {
+      f.classList.toggle(
+        'gone',
+        !f.dataset.name!.toLowerCase().includes(query),
+      );
+    });
+  });
+});

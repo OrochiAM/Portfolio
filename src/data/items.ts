@@ -28,6 +28,21 @@ export const flatten = (list: Item[]): Item[] =>
     i.kind === 'folder' ? [i, ...flatten(i.children)] : [i],
   );
 
+export const pathOf = (
+  target: Item,
+  list: Item[] = items,
+  prefix = 'C:\\Desktop',
+): string | undefined => {
+  for (const i of list) {
+    const p = `${prefix}\\${i.name}`;
+    if (i.id === target.id) return p;
+    if (i.kind === 'folder') {
+      const found = pathOf(target, i.children, p);
+      if (found) return found;
+    }
+  }
+};
+
 export const items: Item[] = [
   {
     kind: 'folder',
@@ -37,6 +52,28 @@ export const items: Item[] = [
     x: 10,
     y: 10,
     children: [
+      {
+        kind: 'file',
+        id: 'wood-chopper',
+        name: 'Wood Chopper.exe',
+        icon: 'wood',
+        title: 'WOOD CHOPPER',
+        content: {
+          type: 'iframe',
+          src: 'https://orochiam.github.io/Wood-Chopper/',
+        },
+      },
+      {
+        kind: 'file',
+        id: 'doctor-battle-simulator',
+        name: 'Doctor Battle Simulator.exe',
+        title: 'DOCTOR BATTLE SIMULATOR',
+        icon: 'doctor',
+        content: {
+          type: 'iframe',
+          src: 'https://orochiam.github.io/Doctor-Battle-Simulator/',
+        },
+      },
       {
         kind: 'file',
         id: 'wood-chopper',
