@@ -75,6 +75,23 @@ document.querySelectorAll<HTMLElement>('.file').forEach((file) => {
     trayItem.classList.add('gone');
   });
 
+  const minimizeButton =
+    windowPane.querySelector<HTMLElement>('.btn-minimize')!;
+
+  minimizeButton.addEventListener('click', () => {
+    windowPane.classList.add('gone'); // tray item stays
+  });
+
+  // Tray item: restore if minimized, minimize if visible
+  trayItem.addEventListener('click', () => {
+    if (windowPane.classList.contains('gone')) {
+      windowPane.classList.remove('gone');
+      windowPane.style.zIndex = String(++Draggable.zIndex);
+    } else {
+      windowPane.classList.add('gone');
+    }
+  });
+
   file.addEventListener('dblclick', () => {
     nameEl.textContent = fullName;
     windowPane.classList.remove('gone');

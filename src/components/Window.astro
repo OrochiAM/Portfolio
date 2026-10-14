@@ -1,5 +1,6 @@
 ---
 import closeIcon from '../assets/images/x.png';
+import minimizeIcon from '../assets/images/minimize.png';
 import File from './File.astro';
 import Folder from './Folder.astro';
 import type { Item } from '../data/items';
@@ -15,8 +16,13 @@ const { item } = Astro.props;
     <div class="text">
       <p>{item.title}</p>
     </div>
-    <div class="close btn-close">
-      <img src={closeIcon.src} alt="Close" />
+      <div class="buttons">
+      <div class="minimize btn-minimize" title="Minimize">
+        <img src={minimizeIcon.src} alt="Minimize" />
+      </div>
+      <div class="close btn-close" title="Close">
+        <img src={closeIcon.src} alt="Close" />
+      </div>
     </div>
   </div>
   <div class="body">

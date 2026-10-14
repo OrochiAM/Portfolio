@@ -28,7 +28,8 @@ iframe {
 }
 
 .close,
-.start {
+.start,
+.minimize {
   cursor: url('../assets/images/pointer.png'), auto;
 }
 
@@ -57,7 +58,7 @@ iframe {
   align-items: center;
   justify-content: center;
   width: 175px;
-  height: 200px;
+  height: auto;
   padding: 0.5em;
   transition-property: background-color;
   transition-duration: 0.4s;
@@ -71,6 +72,8 @@ iframe {
     font-size: 24px;
     width: 90%;
     text-align: center;
+    line-height: 1.2;
+    min-height: 2.2em;
   }
 
   img {
@@ -90,6 +93,7 @@ iframe {
   outline: dashed var(--border-size) #000;
   color: #fff;
   height: auto;
+
   img {
     filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff)
       drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff);
@@ -132,15 +136,29 @@ iframe {
       font-size: 20px;
     }
 
-    .close {
-      padding: 0.5em;
-
+    .buttons {
       display: flex;
-    }
+      gap: 0.5em;
 
-    .close:hover {
-      background-color: red;
-      outline: solid var(--border-size) #fff;
+      .close,
+      .minimize {
+        display: flex;
+        align-items: center;
+        padding: 0.5em;
+      }
+
+      .minimize:hover {
+        background-color: #111;
+      }
+
+      .minimize:hover,
+      .close:hover {
+        outline: solid var(--border-size) #fff;
+      }
+
+      .close:hover {
+        background-color: red;
+      }
     }
 
     img {
@@ -202,9 +220,12 @@ footer {
         align-items: center;
         cursor: pointer;
         border: solid var(--border-size);
+        padding: 0 0.5em;
+        gap: 10px;
 
-        svg {
-          width: 40px;
+        img {
+          height: 50px;
+          image-rendering: pixelated;
         }
       }
 
