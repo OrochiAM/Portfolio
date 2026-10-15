@@ -1,3 +1,12 @@
+import HomePage from '../components/fakesites/Home.astro';
+import SkillsPage from '../components/fakesites/Skills.astro';
+
+export type PageComponent = typeof HomePage;
+export interface BrowserPage {
+  url: string;
+  component: PageComponent;
+}
+
 export type Content =
   | { type: 'iframe'; src: string }
   | { type: 'text'; text: string }
@@ -22,17 +31,9 @@ export interface FolderItem extends Base {
   children: Item[];
 }
 
-import HomePage from '../components/fakesites/Home.astro';
-import SkillsPage from '../components/fakesites/Skills.astro';
-
-export interface BrowserPage {
-  url: string;
-  component: PageComponent;
-}
-
-export type PageComponent = typeof HomePage;
-
 export type Item = FileItem | FolderItem;
+
+// ...flatten, pathOf and the items array unchanged
 
 export const flatten = (list: Item[]): Item[] =>
   list.flatMap((i) =>

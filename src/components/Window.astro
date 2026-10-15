@@ -1,93 +1,54 @@
 ---
-import closeIcon from '../assets/images/x.png';
-import minimizeIcon from '../assets/images/minimize.png';
-import File from './File.astro';
-import Folder from './Folder.astro';
-import { pathOf } from '../data/items';
+import { asset } from '../data/assets';
 import type { Item } from '../data/items';
+import FolderView from './window/FolderView.astro';
+import IframeView from './window/IframeView.astro';
+import TextView from './window/TextView.astro';
+import BrowserView from './window/BrowserView.astro';
 
 interface Props {
   item: Item;
 }
 const { item } = Astro.props;
-
-const path = item.kind === 'folder' ? pathOf(item) : undefined;
 ---
 
-<div class="window gone" data-window={item.id}>
-  <div class="header" title={item.name}>
-    <div class="text">
-      <p>{item.title}</p>
-    </div>
+<div class="window gone" data-window={item.id} data-x={item.x} data-y={item.y}>
+  <div class="header">
+    <div class="text">{item.title}</div>
     <div class="buttons">
-      <div class="minimize btn-minimize" title="Minimize">
-        <img src={minimizeIcon.src} alt="Minimize" />
-      </div>
-      <div class="close btn-close" title="Close">
-        <img src={closeIcon.src} alt="Close" />
-      </div>
+      <div class="minimize btn-minimize"><img src={asset('images/minimize.png')} alt="Minimize" /></div>
+      <div class="close btn-close"><img src={asset('images/close.png')} alt="Close" /></div>
     </div>
   </div>
+
   <div class="body">
-    {
-      item.kind === 'folder' ? (
-        <div class="folder-view">
-          <div class="toolbar">
-            <div class="address">
-              <span>{path}</span>
-            </div>
-            <input class="search" type="text" placeholder="Search" />
-          </div>
-          <div class="folder-grid">
-            {item.children.map((child) =>
-              child.kind === 'folder' ? (
-                <Folder item={child} nested />
-              ) : (
-                <File item={child} nested />
-              ),
-            )}
-          </div>
-        </div>
-      ) : item.content.type === 'iframe' ? (
-        <iframe src={item.content.src} title={item.title} />
-      ) : item.content.type === 'browser' ? (
-        <div class="browser">
-          <div class="browser-bar">
-            <button class="nav prev" type="button" title="Back" />
-            <button class="nav next" type="button" title="Forward" />
-            <button class="nav home" type="button" title="First page" />
-            <label>Address:</label>
-            <div class="address-field">
-              <input
-                class="url-input"
-                type="text"
-                value={item.content.pages[0].url}
-                spellcheck="false"
-              />
-              <button class="dropdown" type="button" title="Pages" />
-              <ul class="address-list gone">
-                {item.content.pages.map((p) => (
-                  <li>{p.url}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div class="browser-view">
-            {item.content.pages.map((p, i) => {
-              const Page = p.component;
-              return (
-                <article class:list={['page', { gone: i > 0 }]} data-url={p.url}>
-                  <Page />
-                </article>
-              );
-            })}
-          </div>
-        </div>
-      ) : (
-        <div class="text">
-          <p>{item.content.text}</p>
-        </div>
-      )
-    }
+    {item.kind === 'folder' && <FolderView item={item} />}
+    {item.kind === 'file' && item.content.type === 'iframe' && (
+      <IframeView src={item.content.src} title={item.title} />
+    )}
+    {item.kind === 'file' && item.content.type === 'text' && <TextView text={item.content.text} />}
+    {item.kind === 'file' && item.content.type === 'browser' && (
+      <BrowserView pages={item.content.pages} />
+    )}
   </div>
 </div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { Draggable } from 'gsap/Draggable';
+  import { minimizeItem, closeItem } from '../scripts/windows';
+
+  gsap.registerPlugin(Draggable);
+
+  document.querySelectorAll<HTMLElement>('.window').forEach((win, i) => {
+    const id = win.dataset.window!;
+    gsap.set(win, {
+      x: Number(win.dataset.x ?? 150 + i * 20),
+      y: Number(win.dataset.y ?? 60 + i * 20),
+    });
+    Draggable.create(win, { zIndexBoost: true, dragClickables: false });
+
+    win.querySelector('.btn-minimize')!.addEventListener('click', () => minimizeItem(id));
+    win.querySelector('.btn-close')!.addEventListener('click', () => closeItem(id));
+  });
+</script>

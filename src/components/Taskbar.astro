@@ -1,55 +1,43 @@
 ---
-import startMeh from '../assets/images/start-meh.png';
-import start from '../assets/images/start.png';
-import fileIcon from '../assets/images/file.png';
-import folderIcon from '../assets/images/folder.png';
+import { asset } from '../data/assets';
 import { getIcon } from '../data/icons';
-import { items, flatten, pathOf } from '../data/items';
-import type { Item } from '../data/items';
+import { items, flatten } from '../data/items';
 
 const all = flatten(items);
-const iconOf = (item: Item) =>
-  getIcon(item.icon, item.kind === 'folder' ? folderIcon : fileIcon).src;
+const iconOf = (item: (typeof all)[number]) =>
+  getIcon(item.icon, item.kind === 'folder' ? 'folder' : 'file');
 ---
 
 <footer>
   <div class="left">
     <div class="start">
       <div class="start-menu gone">
-        <div class="start-banner"><span>PORTFOLIO</span></div>
+        <span class="start-banner">PORTFOLIO</span>
         <ul class="start-list">
-          {
-            all.map((item) => (
-              <li class="start-item" data-start={item.id} title={pathOf(item)}>
-                <img src={iconOf(item)} alt="" />
-                <span>{item.name}</span>
-              </li>
-            ))
-          }
+          {all.map((item) => (
+            <li class="start-item" data-start={item.id}>
+              <img src={iconOf(item)} alt="" />
+              {item.name}
+            </li>
+          ))}
         </ul>
       </div>
       <img
-        src={startMeh.src}
+        src={asset('images/start-meh.png')}
         class="btn-start"
-        data-closed={startMeh.src}
-        data-open={start.src}
+        data-closed={asset('images/start-meh.png')}
+        data-open={asset('images/start.png')}
         alt="Start"
       />
     </div>
 
     <div class="file-tray">
-      {
-        all.map((item) => (
-          <div
-            class="file-tray-item gone"
-            data-tray={item.id}
-            title={item.name}
-          >
-            <img src={iconOf(item)} alt="" />
-            <p>{item.title}</p>
-          </div>
-        ))
-      }
+      {all.map((item) => (
+        <div class="file-tray-item gone" data-tray={item.id}>
+          <img src={iconOf(item)} alt="" />
+          <p>{item.title}</p>
+        </div>
+      ))}
     </div>
   </div>
 
@@ -60,3 +48,53 @@ const iconOf = (item: Item) =>
     </div>
   </div>
 </footer>
+
+<script>
+  import { openItem, minimizeItem, parts } from '../scripts/windows';
+
+  // Start menu
+  const startBtn = document.querySelector<HTMLImageElement>('.btn-start')!;
+  const startMenu = document.querySelector<HTMLElement>('.start-menu')!;
+
+  const toggleStart = (open: boolean) => {
+    startMenu.classList.toggle('gone', !open);
+    startBtn.src = open ? startBtn.dataset.open! : startBtn.dataset.closed!;
+  };
+
+  startBtn.addEventListener('click', () => toggleStart(startMenu.classList.contains('gone')));
+
+  document.querySelectorAll<HTMLElement>('[data-start]').forEach((li) =>
+    li.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openItem(li.dataset.start!);
+      toggleStart(false);
+    })
+  );
+
+  document.addEventListener('mousedown', (e) => {
+    if (!(e.target as Element).closest('.start')) toggleStart(false);
+  });
+
+  // Tray: click opens a minimized window or minimizes an open one
+  document.querySelectorAll<HTMLElement>('[data-tray]').forEach((tray) =>
+    tray.addEventListener('click', () => {
+      const id = tray.dataset.tray!;
+      if (parts(id).win.classList.contains('gone')) openItem(id);
+      else minimizeItem(id);
+    })
+  );
+
+  // Clock
+  const timeEl = document.querySelector<HTMLElement>('.info .time')!;
+  const dateEl = document.querySelector<HTMLElement>('.info .date')!;
+
+  const updateDateTime = () => {
+    const date = new Date();
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    timeEl.textContent = `${date.getHours()}:${minutes}`;
+    dateEl.textContent = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}.`;
+  };
+
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+</script>

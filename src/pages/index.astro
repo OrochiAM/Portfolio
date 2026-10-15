@@ -1,21 +1,15 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import File from '../components/File.astro';
-import Folder from '../components/Folder.astro';
 import Window from '../components/Window.astro';
 import Taskbar from '../components/Taskbar.astro';
+import SelectBox from '../components/SelectBox.astro';
 import { items, flatten } from '../data/items';
 ---
 
 <Layout title="Portfolio">
-  <div class="select-box"></div>
-
-  {items.map((item) => (item.kind === 'folder' ? <Folder item={item} /> : <File item={item} />))}
+  <SelectBox />
+  {items.map((item) => <File item={item} />)}
   {flatten(items).map((item) => <Window item={item} />)}
-
   <Taskbar />
-
-  <script>
-    import '../scripts/desktop';
-  </script>
 </Layout>

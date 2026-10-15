@@ -1,0 +1,30 @@
+<div class="select-box"></div>
+
+<script>
+  const selectBox = document.querySelector<HTMLElement>('.select-box')!;
+
+  let isMouseDown = false;
+  let mouseDownX = 0;
+  let mouseDownY = 0;
+
+  document.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    mouseDownX = e.clientX;
+    mouseDownY = e.clientY;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isMouseDown = false;
+    selectBox.style.display = 'none';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+
+    selectBox.style.left = `${Math.min(mouseDownX, e.clientX)}px`;
+    selectBox.style.top = `${Math.min(mouseDownY, e.clientY)}px`;
+    selectBox.style.display = 'flex';
+    selectBox.style.width = `${Math.abs(mouseDownX - e.clientX)}px`;
+    selectBox.style.height = `${Math.abs(mouseDownY - e.clientY)}px`;
+  });
+</script>

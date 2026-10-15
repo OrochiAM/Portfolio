@@ -1,50 +1,42 @@
 ---
-import arrow from '../../assets/images/fakesites/arrow.gif';
-import bluebar from '../../assets/images/fakesites/bluebar.gif';
-import computer from '../../assets/images/fakesites/computer.gif';
-import palette from '../../assets/images/fakesites/palette.gif';
-import waveemoji from '../../assets/images/fakesites/waveemoji.gif';
-import notepad from '../../assets/images/fakesites/notepad.gif';
-import noframes from '../../assets/images/fakesites/noframes.gif';
-import netscape from '../../assets/images/fakesites/netscape.gif';
-import explorer from '../../assets/images/fakesites/explorer.gif';
-import welcome from '../../assets/images/fakesites/welcome.gif';
-import me from '../../assets/images/fakesites/me.png';
+import { asset } from '../../data/assets';
+
+const img = (name: string) => asset(`images/fakesites/${name}`);
 ---
 
 <div class="home">
   <div class="hint">
-    <img src={arrow.src} alt="" />
+    <img src={img('arrow.gif')} alt="" />
     <p>Click the arrows to change the page</p>
   </div>
 
-  <img class="photo" src={me.src} alt="Portrait" />
+  <img class="photo" src={img('me.png')} alt="Portrait" />
 
-  <img class="bar" src={bluebar.src} alt="" />
+  <img class="bar" src={img('bluebar.gif')} alt="" />
   <div class="title">
-    <img src={computer.src} alt="" />
+    <img src={img('computer.gif')} alt="" />
     <div>
       <p class="name">Aleksa Milić</p>
       <p class="role">Frontend Developer</p>
     </div>
-    <img src={palette.src} alt="" />
+    <img src={img('palette.gif')} alt="" />
   </div>
-  <img class="bar" src={bluebar.src} alt="" />
+  <img class="bar" src={img('bluebar.gif')} alt="" />
 
   <div class="welcome">
-    <img src={waveemoji.src} class="wave" alt="" />
+    <img src={img('waveemoji.gif')} class="wave" alt="" />
     <div>
-      <img src={welcome.src} class="big" alt="">
+      <img src={img('welcome.gif')} class="big" alt="Welcome" />
       <p class="small">To My Portfolio!!!</p>
     </div>
-    <img class="wave flip" src={waveemoji.src} alt="" />
+    <img class="wave flip" src={img('waveemoji.gif')} alt="" />
   </div>
 
   <div class="badges">
-    <img src={notepad.src} alt="Site created with Notepad" />
-    <img src={noframes.src} alt="Campaign against frames" />
-    <img src={netscape.src} alt="Netscape now" />
-    <img src={explorer.src} alt="Internet Explorer" />
+    <img src={img('notepad.gif')} alt="Site created with Notepad" />
+    <img src={img('noframes.gif')} alt="Campaign against frames" />
+    <img src={img('netscape.gif')} alt="Netscape now" />
+    <img src={img('explorer.gif')} alt="Internet Explorer" />
   </div>
 </div>
 
@@ -53,7 +45,7 @@ import me from '../../assets/images/fakesites/me.png';
     position: relative;
     padding: 1cqw 0 4cqw;
     background-color: #000;
-    background-image: url('../../assets/images/fakesites/stars.gif');
+    background-image: url('/images/fakesites/stars.gif');
     text-align: center;
     font-family: 'Comic Sans MS', 'Comic Neue', 'Chalkboard SE', cursive;
 
@@ -69,7 +61,6 @@ import me from '../../assets/images/fakesites/me.png';
     img {
       width: 7cqw;
       transform: rotate(-70deg);
-
     }
 
     p {
@@ -97,7 +88,7 @@ import me from '../../assets/images/fakesites/me.png';
   }
 
   .title {
-    width: 55cqw;
+    width: 60cqw;
     margin: 0 auto;
     padding: 2cqw 4cqw;
     display: flex;
@@ -105,8 +96,16 @@ import me from '../../assets/images/fakesites/me.png';
     justify-content: space-between;
 
     img {
-      width: 5cqw;
+      width: 6cqw;
       flex: none;
+    }
+
+    img:first-child {
+      width: 11cqw;
+    }
+
+    img:last-child {
+      margin-left: 1.5cqw;
     }
   }
 

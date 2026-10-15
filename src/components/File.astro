@@ -1,27 +1,58 @@
 ---
-import fileIcon from '../assets/images/file.png';
-import type { FileItem } from '../data/items';
 import { getIcon } from '../data/icons';
+import type { Item } from '../data/items';
 
 interface Props {
-  item: FileItem;
+  item: Item;
   nested?: boolean;
 }
 const { item, nested = false } = Astro.props;
+const isFolder = item.kind === 'folder';
 ---
 
 <div
-  class:list={['file', { 'in-window': nested }]}
-  role="button"
+  class:list={['file', { folder: isFolder, 'in-window': nested }]}
   tabindex="0"
+  title={item.name}
   data-open={item.id}
   data-x={item.x}
   data-y={item.y}
   data-name={item.name}
-  title={item.name}
 >
-  <img src={getIcon(item.icon, fileIcon).src} alt="" />
-  <div class="name">
-    <p>{item.name}</p>
-  </div>
+  <img src={getIcon(item.icon, isFolder ? 'folder' : 'file')} alt="" />
+  <div class="name"><p>{item.name}</p></div>
 </div>
+
+<script>
+  import { gsap } from 'gsap';
+  import { Draggable } from 'gsap/Draggable';
+  import { openItem } from '../scripts/windows';
+  import { fitName } from '../scripts/fitName';
+
+  gsap.registerPlugin(Draggable);
+
+  document.querySelectorAll<HTMLElement>('.file').forEach((file) => {
+    // only desktop icons are draggable, not the ones inside a folder window
+    if (!file.classList.contains('in-window')) {
+      gsap.set(file, { x: Number(file.dataset.x ?? 0), y: Number(file.dataset.y ?? 0) });
+      Draggable.create(file, { zIndexBoost: false, dragClickables: false });
+    }
+
+    fitName(file);
+
+    file.addEventListener('dblclick', () => {
+      file.querySelector('.name p')!.textContent = file.dataset.name!;
+      openItem(file.dataset.open!);
+      file.focus();
+    });
+
+    file.addEventListener('focusout', () => {
+      fitName(file);
+      file.blur();
+    });
+  });
+
+  document.fonts.ready.then(() =>
+    document.querySelectorAll<HTMLElement>('.file').forEach(fitName)
+  );
+</script>

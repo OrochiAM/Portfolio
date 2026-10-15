@@ -2,16 +2,15 @@
 import '../styles/global.scss';
 
 interface Props {
-  title?: string;
+  title: string;
 }
-const { title = 'Portfolio' } = Astro.props;
+const { title } = Astro.props;
 ---
 
-<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
   </head>
   <body>

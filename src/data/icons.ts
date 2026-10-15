@@ -1,11 +1,5 @@
-import type { ImageMetadata } from 'astro';
+import { asset } from './assets';
 
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/images/*.png',
-  {
-    eager: true,
-  },
-);
-
-export const getIcon = (name: string | undefined, fallback: ImageMetadata) =>
-  (name && images[`../assets/images/${name}.png`]?.default) || fallback;
+// name from items.ts ('game'), or the fallback ('file' / 'folder')
+export const getIcon = (name: string | undefined, fallback: string) =>
+  asset(`images/${name ?? fallback}.png`);

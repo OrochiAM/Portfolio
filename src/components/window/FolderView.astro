@@ -1,0 +1,31 @@
+---
+import File from '../File.astro';
+import { pathOf, type FolderItem } from '../../data/items';
+
+interface Props {
+  item: FolderItem;
+}
+const { item } = Astro.props;
+---
+
+<div class="folder-view">
+  <div class="toolbar">
+    <span class="address">{pathOf(item)}</span>
+    <input class="search" placeholder="Search" />
+  </div>
+  <div class="folder-grid">
+    {item.children.map((child) => <File item={child} nested />)}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.folder-view').forEach((view) => {
+    const input = view.querySelector<HTMLInputElement>('.search')!;
+    const files = view.querySelectorAll<HTMLElement>('.folder-grid > .file');
+
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      files.forEach((f) => f.classList.toggle('gone', !f.dataset.name!.toLowerCase().includes(q)));
+    });
+  });
+</script>

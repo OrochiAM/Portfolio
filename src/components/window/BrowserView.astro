@@ -1,0 +1,77 @@
+---
+import type { BrowserPage } from '../../data/items';
+
+interface Props {
+  pages: BrowserPage[];
+}
+const { pages } = Astro.props;
+---
+
+<div class="browser">
+  <div class="browser-bar">
+    <button class="nav prev" aria-label="Back"></button>
+    <button class="nav next" aria-label="Forward"></button>
+    <button class="nav star" aria-label="First page"></button>
+    <label>Address:</label>
+    <div class="address-field">
+      <input class="url-input" value={pages[0].url} />
+      <button class="dropdown" aria-label="Pages"></button>
+      <ul class="address-list gone">
+        {pages.map((p, i) => <li data-index={i}>{p.url}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="browser-view">
+    {pages.map((p, i) => {
+      const Page = p.component;
+      return (
+        <article class:list={['page', { gone: i > 0 }]} data-url={p.url}>
+          <Page />
+        </article>
+      );
+    })}
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.browser').forEach((browser) => {
+    const pages = [...browser.querySelectorAll<HTMLElement>('.page')];
+    const view = browser.querySelector<HTMLElement>('.browser-view')!;
+    const input = browser.querySelector<HTMLInputElement>('.url-input')!;
+    const list = browser.querySelector<HTMLElement>('.address-list')!;
+    let current = 0;
+
+    const show = (i: number) => {
+      current = (i + pages.length) % pages.length;
+      pages.forEach((p, n) => p.classList.toggle('gone', n !== current));
+      input.value = pages[current].dataset.url!;
+      view.scrollTop = 0;
+    };
+
+    browser.querySelector('.prev')!.addEventListener('click', () => show(current - 1));
+    browser.querySelector('.next')!.addEventListener('click', () => show(current + 1));
+    browser.querySelector('.star')!.addEventListener('click', () => show(0));
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const i = pages.findIndex((p) => p.dataset.url === input.value.trim());
+      if (i >= 0) show(i);
+      else input.value = pages[current].dataset.url!;
+    });
+
+    browser.querySelector('.dropdown')!.addEventListener('click', (e) => {
+      e.stopPropagation();
+      list.classList.toggle('gone');
+    });
+
+    list.querySelectorAll<HTMLElement>('li').forEach((li) =>
+      li.addEventListener('click', () => {
+        show(Number(li.dataset.index));
+        list.classList.add('gone');
+      })
+    );
+
+    document.addEventListener('click', () => list.classList.add('gone'));
+  });
+</script>
