@@ -73,13 +73,14 @@ const path = item.kind === 'folder' ? pathOf(item) : undefined;
             </div>
           </div>
           <div class="browser-view">
-            {item.content.pages.map((p, i) => (
-              <article
-                class:list={['page', { gone: i > 0 }]}
-                data-url={p.url}
-                set:html={p.html}
-              />
-            ))}
+            {item.content.pages.map((p, i) => {
+              const Page = p.component;
+              return (
+                <article class:list={['page', { gone: i > 0 }]} data-url={p.url}>
+                  <Page />
+                </article>
+              );
+            })}
           </div>
         </div>
       ) : (

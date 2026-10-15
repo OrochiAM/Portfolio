@@ -22,10 +22,15 @@ export interface FolderItem extends Base {
   children: Item[];
 }
 
+import HomePage from '../components/fakesites/Home.astro';
+import SkillsPage from '../components/fakesites/Skills.astro';
+
 export interface BrowserPage {
   url: string;
-  html: string;
+  component: PageComponent;
 }
+
+export type PageComponent = typeof HomePage;
 
 export type Item = FileItem | FolderItem;
 
@@ -124,16 +129,8 @@ export const items: Item[] = [
     content: {
       type: 'browser',
       pages: [
-        {
-          url: 'http://me.web/index.html',
-          html: '<h1>Aleksa Milic</h1><p>Frontend Developer.</p>',
-        },
-        { url: 'http://me.web/skills.html', html: '<h1>Skills</h1><p>…</p>' },
-        {
-          url: 'http://me.web/projects.html',
-          html: '<h1>Projects</h1><p>…</p>',
-        },
-        { url: 'http://me.web/contact.html', html: '<h1>Contact</h1><p>…</p>' },
+        { url: 'http://me.web/index.html', component: HomePage },
+        { url: 'http://me.web/skills.html', component: SkillsPage },
       ],
     },
   },

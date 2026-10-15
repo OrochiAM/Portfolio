@@ -1,0 +1,149 @@
+---
+import arrow from '../../assets/images/fakesites/arrow.gif';
+import bluebar from '../../assets/images/fakesites/bluebar.gif';
+import computer from '../../assets/images/fakesites/computer.gif';
+import palette from '../../assets/images/fakesites/palette.gif';
+import waveemoji from '../../assets/images/fakesites/waveemoji.gif';
+import notepad from '../../assets/images/fakesites/notepad.gif';
+import noframes from '../../assets/images/fakesites/noframes.gif';
+import netscape from '../../assets/images/fakesites/netscape.gif';
+import explorer from '../../assets/images/fakesites/explorer.gif';
+import me from '../../assets/images/fakesites/me.png';
+---
+
+<div class="home">
+  <img class="bar" src={bluebar.src} alt="" />
+  <div class="title">
+    <img src={computer.src} alt="" />
+    <div>
+      <p class="name">SKILLS</p>
+      <p class="role">Frontend Developer</p>
+    </div>
+    <img src={palette.src} alt="" />
+  </div>
+</div>
+
+<style lang="scss">
+  .home {
+    position: relative;
+    padding: 1cqw 0 4cqw;
+    background-color: #000;
+    background-image: url('../../assets/images/fakesites/stars.gif');
+    text-align: center;
+    font-family: 'Comic Sans MS', 'Comic Neue', 'Chalkboard SE', cursive;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .hint {
+    position: absolute;
+    top: 1cqw;
+    left: 5.5cqw;
+
+    img {
+      width: 3.8cqw;
+    }
+
+    p {
+      position: absolute;
+      top: 3.8cqw;
+      left: 4.5cqw;
+      width: 16cqw;
+      font-size: 2cqw;
+      line-height: 1.15;
+      color: #ffff33;
+    }
+  }
+
+  .photo {
+    display: block;
+    width: 33cqw;
+    margin: 3cqw auto 2cqw;
+  }
+
+  .bar {
+    display: block;
+    width: 55cqw;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .title {
+    width: 55cqw;
+    margin: 0 auto;
+    padding: 2cqw 4cqw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    img {
+      width: 6cqw;
+      flex: none;
+    }
+  }
+
+  .name {
+    font-size: 3cqw;
+    color: #00ffcc;
+  }
+
+  .role {
+    font-size: 3.6cqw;
+    color: #ff00ff;
+  }
+
+  .welcome {
+    width: 55cqw;
+    margin: 4.5cqw auto 0;
+    padding: 4.5cqw 3cqw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f00;
+
+    img {
+      width: 8.2cqw;
+      flex: none;
+    }
+
+    .flip {
+      transform: scaleX(-1);
+    }
+  }
+
+  .big {
+    font-family: 'Arial Black', Impact, sans-serif;
+    font-weight: 900;
+    font-size: 6.2cqw;
+    line-height: 1;
+    letter-spacing: -0.2cqw;
+    color: #0000ff;
+    -webkit-text-stroke: 0.25cqw #00006b;
+    paint-order: stroke fill;
+    text-shadow: 0.25cqw 0.25cqw 0 #00004d;
+  }
+
+  .small {
+    margin-top: 1cqw;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 4.2cqw;
+    color: #1fe01f;
+    text-shadow: 0.15cqw 0.15cqw 0 #006400;
+  }
+
+  .badges {
+    margin-top: 5cqw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2cqw;
+
+    img {
+      height: 3cqw;
+      width: auto;
+    }
+  }
+</style>

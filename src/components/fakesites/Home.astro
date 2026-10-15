@@ -1,0 +1,168 @@
+---
+import arrow from '../../assets/images/fakesites/arrow.gif';
+import bluebar from '../../assets/images/fakesites/bluebar.gif';
+import computer from '../../assets/images/fakesites/computer.gif';
+import palette from '../../assets/images/fakesites/palette.gif';
+import waveemoji from '../../assets/images/fakesites/waveemoji.gif';
+import notepad from '../../assets/images/fakesites/notepad.gif';
+import noframes from '../../assets/images/fakesites/noframes.gif';
+import netscape from '../../assets/images/fakesites/netscape.gif';
+import explorer from '../../assets/images/fakesites/explorer.gif';
+import welcome from '../../assets/images/fakesites/welcome.gif';
+import me from '../../assets/images/fakesites/me.png';
+---
+
+<div class="home">
+  <div class="hint">
+    <img src={arrow.src} alt="" />
+    <p>Click the arrows to change the page</p>
+  </div>
+
+  <img class="photo" src={me.src} alt="Portrait" />
+
+  <img class="bar" src={bluebar.src} alt="" />
+  <div class="title">
+    <img src={computer.src} alt="" />
+    <div>
+      <p class="name">Aleksa Milić</p>
+      <p class="role">Frontend Developer</p>
+    </div>
+    <img src={palette.src} alt="" />
+  </div>
+  <img class="bar" src={bluebar.src} alt="" />
+
+  <div class="welcome">
+    <img src={waveemoji.src} class="wave" alt="" />
+    <div>
+      <img src={welcome.src} class="big" alt="">
+      <p class="small">To My Portfolio!!!</p>
+    </div>
+    <img class="wave flip" src={waveemoji.src} alt="" />
+  </div>
+
+  <div class="badges">
+    <img src={notepad.src} alt="Site created with Notepad" />
+    <img src={noframes.src} alt="Campaign against frames" />
+    <img src={netscape.src} alt="Netscape now" />
+    <img src={explorer.src} alt="Internet Explorer" />
+  </div>
+</div>
+
+<style lang="scss">
+  .home {
+    position: relative;
+    padding: 1cqw 0 4cqw;
+    background-color: #000;
+    background-image: url('../../assets/images/fakesites/stars.gif');
+    text-align: center;
+    font-family: 'Comic Sans MS', 'Comic Neue', 'Chalkboard SE', cursive;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .hint {
+    position: absolute;
+    top: 2cqw;
+    left: 2cqw;
+
+    img {
+      width: 7cqw;
+      transform: rotate(-70deg);
+
+    }
+
+    p {
+      position: absolute;
+      top: 3.8cqw;
+      left: 4.5cqw;
+      width: 16cqw;
+      font-size: 2cqw;
+      line-height: 1.15;
+      color: #ffff33;
+    }
+  }
+
+  .photo {
+    display: block;
+    width: 33cqw;
+    margin: 3cqw auto 2cqw;
+  }
+
+  .bar {
+    display: block;
+    width: 55cqw;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .title {
+    width: 55cqw;
+    margin: 0 auto;
+    padding: 2cqw 4cqw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    img {
+      width: 5cqw;
+      flex: none;
+    }
+  }
+
+  .name {
+    font-size: 3cqw;
+    color: #00ffcc;
+  }
+
+  .role {
+    font-size: 3.6cqw;
+    color: #ff00ff;
+  }
+
+  .welcome {
+    width: 65cqw;
+    margin: 4.5cqw auto 0;
+    padding: 4.5cqw 3cqw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f00;
+
+    .wave {
+      width: 10cqw;
+      flex: none;
+    }
+
+    .flip {
+      transform: scaleX(-1);
+    }
+  }
+
+  .big {
+    width: 100%;
+    margin: -50px 0 -40px 0;
+  }
+
+  .small {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    font-size: 4.2cqw;
+    color: #1fe01f;
+    text-shadow: 0.15cqw 0.15cqw 0 #006400;
+  }
+
+  .badges {
+    margin-top: 5cqw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2cqw;
+
+    img {
+      height: 5cqw;
+      width: auto;
+    }
+  }
+</style>
