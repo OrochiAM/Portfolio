@@ -134,4 +134,17 @@ export const items: Item[] = [
       ],
     },
   },
+  {
+    kind: 'file',
+    id: 'subway-surfers',
+    name: 'Subway Surfers.mp4',
+    title: 'SUBWAY SURFERS',
+    icon: 'video',
+    x: 610,
+    y: 10,
+    content: {
+      type: 'iframe',
+      src: 'https://www.youtube.com/embed/QPW3XwBoQlw?si=qMS_19YmqpQpoM7V',
+    },
+  },
 ];
