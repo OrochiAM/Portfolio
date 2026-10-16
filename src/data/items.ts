@@ -24,6 +24,8 @@ interface Base {
 export interface FileItem extends Base {
   kind: 'file';
   content: Content;
+  width?: string;
+  height?: string;
 }
 
 export interface FolderItem extends Base {
@@ -70,6 +72,7 @@ export const items: Item[] = [
         name: 'Wood Chopper.exe',
         icon: 'wood',
         title: 'WOOD CHOPPER',
+        width: '45vh',
         content: {
           type: 'iframe',
           src: 'https://orochiam.github.io/Wood-Chopper/',
@@ -81,6 +84,8 @@ export const items: Item[] = [
         name: 'Doctor Battle Simulator.exe',
         title: 'DOCTOR BATTLE SIMULATOR',
         icon: 'doctor',
+        width: '48vh',
+        height: '48vh',
         content: {
           type: 'iframe',
           src: 'https://orochiam.github.io/Doctor-Battle-Simulator/',
@@ -143,9 +148,10 @@ export const items: Item[] = [
     icon: 'video',
     x: 610,
     y: 10,
+    width: '34vh',
     content: {
       type: 'iframe',
-      src: 'https://www.youtube.com/embed/QPW3XwBoQlw?si=qMS_19YmqpQpoM7V',
+      src: 'https://www.youtube.com/embed/QPW3XwBoQlw?controls=0&mute=1&showinfo=0',
     },
   },
 ];

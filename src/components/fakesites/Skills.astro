@@ -1,2 +1,158 @@
-<h1>SKILLS</h1>
-<p>hiiiii</p>
+---
+import { asset } from '../../data/assets';
+
+const img = (name: string) => asset(`images/fakesites/${name}`);
+
+interface Skill {
+  icon: string;
+  label: string;
+}
+
+interface Group {
+  title: string;
+  icon: string;
+  rows: Skill[][];
+}
+
+const groups: Group[] = [
+  {
+    title: 'Frontend',
+    icon: 'palette.gif',
+    rows: [
+      [
+        { icon: 'html.gif', label: 'HTML' },
+        { icon: 'css.gif', label: 'CSS (Sass, Tailwind)' },
+        { icon: 'javascript.gif', label: 'JavaScript (Vanilla, Typescript)' },
+        { icon: 'gsap.png', label: 'Gsap' },
+      ],
+      [
+        { icon: 'react.gif', label: 'React' },
+        { icon: 'astro.png', label: 'Astro' },
+        { icon: 'p5.png', label: 'p5.js' },
+      ],
+    ],
+  },
+  {
+    title: 'Backend',
+    icon: 'computer.gif',
+    rows: [
+      [
+        { icon: 'node.gif', label: 'Node.js' },
+        { icon: 'express.png', label: 'Express.js' },
+        { icon: 'php.webp', label: 'Php' },
+        { icon: 'sql.webp', label: 'SQL' },
+      ],
+    ],
+  },
+  {
+    title: 'Tools',
+    icon: 'tools.gif',
+    rows: [
+      [
+        { icon: 'figma.webp', label: 'Figma' },
+        { icon: 'aseprite.png', label: 'Aseprite' },
+        { icon: 'csp.png', label: 'Clip Studio Paint' },
+        { icon: 'git.webp', label: 'Git' },
+      ],
+    ],
+  },
+];
+---
+
+<div class="skills" style={`background-image: url('${img('skybackground.gif')}')`}>
+  <img class="badge" src={img('elite-skills.gif')} alt="Elite skills" />
+  <img class="heading" src={img('skills.gif')} alt="My Skills" />
+
+  {groups.map((group) => (
+    <section class="group">
+      <img class="group-icon" src={img(group.icon)} alt="" />
+      <p class="group-title">{group.title}</p>
+
+      {group.rows.map((row) => (
+        <div class="row">
+          {row.map((skill) => (
+            <div class="skill">
+              <img src={img(skill.icon)} alt="" />
+              <p>{skill.label}</p>
+            </div>
+          ))}
+        </div>
+      ))}
+    </section>
+  ))}
+</div>
+
+<style lang="scss">
+  .skills {
+    padding-bottom: 4cqw;
+    background-color: #cfe8f7;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    font-family: 'Comic Sans MS', 'Comic Neue', 'Chalkboard SE', cursive;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .badge {
+    display: block;
+    width: 20cqw;
+    height: auto;
+  }
+
+  .heading {
+    display: block;
+    width: 30cqw;
+    height: auto;
+    margin: 1cqw auto 5cqw;
+  }
+
+  .group {
+    margin-bottom: 10cqw;
+  }
+
+  .group-icon {
+    display: block;
+    height: 13cqw;
+    width: auto;
+    margin: 0 auto 1cqw;
+  }
+
+  .group-title {
+    font-size: 3cqw;
+    color: #f0f;
+    margin-bottom: 3cqw !important;
+  }
+
+  .row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3cqw;
+    margin-bottom: 3cqw;
+  }
+
+  .skill {
+    width: 20cqw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    img {
+      height: 12cqw;
+      width: auto;
+      max-width: 13cqw;
+      object-fit: contain;
+      margin-bottom: 1cqw;
+      filter: drop-shadow(0px 0px 40px rgb(255, 174, 0));
+    }
+
+    p {
+      font-size: 2.2cqw;
+      line-height: 1.15;
+      color: #00f;
+    }
+  }
+</style>

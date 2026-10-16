@@ -2,8 +2,10 @@
 interface Props {
   src: string;
   title: string;
+  width?: string;
+  height?: string;
 }
-const { src, title } = Astro.props;
+const { src, title, width, height } = Astro.props;
 ---
 
-<iframe src={src} title={title}></iframe>
+<iframe src={src} title={title} style={{width: `${width}`, height: `${height}`}}></iframe>

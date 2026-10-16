@@ -24,7 +24,7 @@ const { item } = Astro.props;
   <div class="body">
     {item.kind === 'folder' && <FolderView item={item} />}
     {item.kind === 'file' && item.content.type === 'iframe' && (
-      <IframeView src={item.content.src} title={item.title} />
+      <IframeView src={item.content.src} title={item.title} width={item.width} height={item.height} />
     )}
     {item.kind === 'file' && item.content.type === 'text' && <TextView text={item.content.text} />}
     {item.kind === 'file' && item.content.type === 'browser' && (
